@@ -22,9 +22,10 @@ The decomposition enables cross-state feature alignment without requiring labele
 ## Repository Structure
 
 ```
-public_release/
+MWD_Signal_decomposition/
 ├── figs/
-│   └── Overall method process.png
+│   ├── Overall method process.png
+│   └── WEB.png
 ├── algorithm/
 │   ├── config.py               # All parameters (input path, decomposition settings)
 │   ├── step0_preprocess.py     # Signal segmentation and pair preparation
@@ -121,6 +122,20 @@ In `algorithm/config.py`:
 | `OTSU_MODE` | `"global"` | Otsu threshold applied globally or per-pair |
 | `SIGMOID_K` | `1.0` | Sigmoid slope (soft-mask sharpness) |
 | `COMM_BASELINE` | `True` | Subtract signal baseline before decomposition |
+
+## Web Platform
+
+A browser-based companion platform is available for interactive MWD signal analysis, decomposition visualization, and lithology prediction without writing code.
+
+![MWD Web Platform](figs/WEB.png)
+
+Key features:
+- Upload borehole `.xlsx` files and run the two-level decomposition interactively
+- Visualize CC / DiC separation per signal and per borehole pair
+- Inspect amplitude retention rates and cross-hole coherence metrics
+- Run lithology classification and view per-group prediction results
+
+> The web platform source code is maintained separately and is not included in this repository.
 
 ## Citation
 
