@@ -21,7 +21,9 @@ The decomposition enables cross-state feature alignment without requiring labele
 
 ## Web Platform
 
-An interactive browser-based platform is available at **[mwd.drcui.top](https://mwd.drcui.top/)** for MWD signal analysis, decomposition visualization, and lithology prediction without writing code.
+### 🌐 <https://mwd.drcui.top/>
+
+An interactive browser-based platform for MWD signal analysis, decomposition visualization, and lithology prediction without writing code.
 
 ![MWD Web Platform](figs/WEB.png)
 
