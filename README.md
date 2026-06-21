@@ -2,8 +2,8 @@
 
 Companion code and data for the paper:
 
-> **Feature-consistent mapping of MWD data under inconsistent borehole conditions: improving data utilization and correlation analysis**  
-> Jingqi Cui, Shunchuan Wu, Keqing Li, Chaoqun Chu  
+> **A consistent feature-mapping method for measurement-while-drilling data under inconsistent borehole-state conditions: enhancing data utilization and improving correlation analysis**  
+> Jingqi Cui, Shunchuan Wu, Keqing Li  
 > *[Journal name, Year]* · DOI: [pending]
 
 ## Overview
@@ -142,8 +142,8 @@ If you use this code or data, please cite:
 
 ```bibtex
 @article{cui2026mwd,
-  title   = {Feature-consistent mapping of MWD data under inconsistent borehole conditions},
-  author  = {Cui, Jingqi and Wu, Shunchuan and Li, Keqing and Chu, Chaoqun},
+  title   = {A consistent feature-mapping method for measurement-while-drilling data under inconsistent borehole-state conditions: enhancing data utilization and improving correlation analysis},
+  author  = {Cui, Jingqi and Wu, Shunchuan and Li, Keqing},
   journal = {[Journal name]},
   year    = {2026},
   doi     = {[pending]}
