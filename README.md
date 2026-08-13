@@ -1,4 +1,4 @@
-# MWD Signal Decomposition: Two-Level Funnel Framework
+# MWD Signal Decomposition: Two-Stage Funnel Framework
 
 Companion code and data for the paper:
 
@@ -8,7 +8,7 @@ Companion code and data for the paper:
 
 ## Overview
 
-Measurement-while-drilling (MWD) signals are jointly modulated by rock properties and borehole state (device configuration, control mode, and drilling parameters). This makes cross-condition comparison and model transfer difficult. This repository provides the implementation of a **two-level funnel decomposition framework** that separates MWD signals into:
+Measurement-while-drilling (MWD) signals are jointly modulated by rock properties and borehole state (device configuration, control mode, and drilling parameters). This makes cross-condition comparison and model transfer difficult. This repository provides the implementation of the **two-stage funnel-shaped decomposition framework** that separates MWD signals into:
 
 - **Common Component (CC)**: parameter-insensitive part, converges across boreholes of the same lithology
 - **Differential Component (DiC)**: parameter-specific part, diverges across boreholes
@@ -29,10 +29,23 @@ An interactive browser-based platform for MWD signal analysis, decomposition vis
 
 Key features:
 
-- Upload borehole `.xlsx` files and run the two-level decomposition interactively
+- Upload borehole `.xlsx` files and run the two-stage decomposition interactively
 - Visualize CC / DiC separation per signal and per borehole pair
 - Inspect amplitude retention rates and cross-hole coherence metrics
 - Run lithology classification and view per-group prediction results
+
+## Supplementary Appendices
+
+Six supplementary appendices referenced in the paper are provided in [`appendices/`](appendices/). Each is a self-contained PDF with its own figures and tables (40 pages in total).
+
+| # | Appendix | Contents |
+|---|----------|----------|
+| 1 | [Baseline comparison of WPD against EMD, EEMD and VMD](appendices/Appendix%20-%20Baseline%20comparison%20of%20WPD%20against%20EMD%2C%20EEMD%20and%20VMD.pdf) | The three alternatives substituted for WPD in the first stage, with everything else held fixed; single case and all six borehole pairs |
+| 2 | [Sensitivity of WPD to the choice of wavelet basis](appendices/Appendix%20-%20Sensitivity%20of%20WPD%20to%20the%20choice%20of%20wavelet%20basis.pdf) | db4 against haar, db2, db6, db8 and sym4, from one to eight vanishing moments |
+| 3 | [Robustness of the node threshold and the soft-mask parameter](appendices/Appendix%20-%20Robustness%20of%20the%20node%20threshold%20and%20the%20soft-mask%20parameter.pdf) | 1551 decompositions across nine datasets; five threshold rules, three mask modes, and σ from 0.5 to 2.0 |
+| 4 | [Feature correlation and redundancy analysis](appendices/Appendix%20-%20Feature%20correlation%20and%20redundancy%20analysis.pdf) | Correlation matrix, VIF and condition number for the 10 features, with an ablation over three feature subsets |
+| 5 | [Class-wise lithology-identification performance](appendices/Appendix%20-%20Class-wise%20lithology-identification%20performance.pdf) | Per-class precision, recall and F1, macro-averaged F1, balanced accuracy and confusion matrices |
+| 6 | [User guide to the MWD-data analysis web platform](appendices/Appendix%20-%20User%20guide%20to%20the%20MWD-data%20analysis%20web%20platform.pdf) | Input format, the full workflow screen by screen, and a worked example that reproduces one row of Table 3 |
 
 ## Repository Structure
 
@@ -41,25 +54,26 @@ MWD_Signal_decomposition/
 ├── figs/
 │   ├── Overall method process.png
 │   └── WEB.png
+├── appendices/                 # Six supplementary appendices (.pdf)
 ├── algorithm/
 │   ├── config.py               # All parameters (input path, decomposition settings)
 │   ├── step0_preprocess.py     # Signal segmentation and pair preparation
-│   ├── step1_line1.py          # Two-level decomposition (WPD + CWT-FQI)
+│   ├── step1_line1.py          # Two-stage decomposition (WPD + CWT-FQI)
 │   └── main.py                 # Entry point: runs step0 → step1
 │
 ├── lithology_prediction/
 │   └── predict_lithology_5types.py   # 5-class lithology classification (6 classifiers)
 │
 └── data/
-    ├── SandstoneA/             # TRD device (4 holes) + RCT device (1 hole), N=30 holes
+    ├── SandstoneA/             # TRD and RCT devices combined, N=34 boreholes
     │   └── curve_features_per_signal.csv
-    ├── SandstoneB/             # RCT Sandstone B, N=6 holes
+    ├── SandstoneB/             # RCT Sandstone B, N=6 boreholes
     │   └── curve_features_per_signal.csv
-    ├── SandstoneC/             # RCT Sandstone C, N=11 holes
+    ├── SandstoneC/             # RCT Sandstone C, N=12 boreholes
     │   └── curve_features_per_signal.csv
-    ├── Granite/                # TRD Granite, N=15 holes
+    ├── Granite/                # TRD Granite, N=16 boreholes
     │   └── curve_features_per_signal.csv
-    └── Limestone/              # TRD Limestone, N=11 holes
+    └── Limestone/              # TRD Limestone, N=11 boreholes
         └── curve_features_per_signal.csv
 ```
 
@@ -71,17 +85,18 @@ Each `curve_features_per_signal.csv` contains per-signal statistical features ex
 |--------|-------------|
 | `signal` | Signal type: `pressure` (MPa) or `torque` (N·m) |
 | `stage` | Decomposition stage: `original` (raw signal) or `final_comm` (CC) |
-| `pair` | Borehole pair identifier (e.g., `Case-1 vs Case-2`) |
-| `hole` | Borehole ID within the pair |
+| `pair` | Borehole pair identifier (e.g., `Case-2RCT_1-1 vs Case-2RCT_1-2`) |
+| `hole` | Borehole ID within the pair (`hole_A` / `hole_B` give the two members) |
 | `mean`, `rms`, `std`, ... | Amplitude-domain features |
 | `dominant_freq`, `spectral_entropy`, ... | Frequency-domain features |
 | `sample_entropy` | Complexity feature |
 
-The pairwise pairing strategy expands the usable sample count from 73 original holes to **1,330 CC samples** (N×(N−1)/2×2 per group).
+The pairwise pairing strategy expands the usable sample count from **71** original-signal samples to **1,274** CC samples for the pressure signal (Table 8 of the paper). Pairs are formed within each lithology group, and each borehole of a pair contributes one sample.
 
 ## Requirements
 
 ```
+python >= 3.9
 numpy >= 1.21
 pandas >= 1.3
 scipy >= 1.7
