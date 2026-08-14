@@ -83,7 +83,7 @@ Each `curve_features_per_signal.csv` contains per-signal statistical features ex
 
 | Column | Description |
 |--------|-------------|
-| `signal` | Signal type: `pressure` (MPa) or `torque` (N·m) |
+| `signal` | Signal type: `pressure` (kN, weight on bit) or `torque` (N·m) |
 | `stage` | Decomposition stage: `original` (raw signal) or `final_comm` (CC) |
 | `pair` | Borehole pair identifier (e.g., `Case-2RCT_1-1 vs Case-2RCT_1-2`) |
 | `hole` | Borehole ID within the pair (`hole_A` / `hole_B` give the two members) |
