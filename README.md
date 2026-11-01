@@ -36,7 +36,7 @@ Key features:
 
 ## Supplementary Appendices
 
-Six supplementary appendices referenced in the paper are provided in [`appendices/`](appendices/). Each is a self-contained PDF with its own figures and tables (40 pages in total).
+Six supplementary appendices referenced in the paper are provided in [`appendices/`](appendices/). Each is a self-contained PDF with its own figures and tables (39 pages in total).
 
 | # | Appendix | Contents |
 |---|----------|----------|
@@ -65,15 +65,15 @@ MWD_Signal_decomposition/
 │   └── predict_lithology_5types.py   # 5-class lithology classification (6 classifiers)
 │
 └── data/
-    ├── SandstoneA/             # TRD and RCT devices combined, N=34 boreholes
+    ├── SandstoneA/             # TRD and RCT devices combined, N=34 stable segments
     │   └── curve_features_per_signal.csv
-    ├── SandstoneB/             # RCT Sandstone B, N=6 boreholes
+    ├── SandstoneB/             # RCT Sandstone B, N=6 stable segments
     │   └── curve_features_per_signal.csv
-    ├── SandstoneC/             # RCT Sandstone C, N=12 boreholes
+    ├── SandstoneC/             # RCT Sandstone C, N=12 stable segments
     │   └── curve_features_per_signal.csv
-    ├── Granite/                # TRD Granite, N=16 boreholes
+    ├── Granite/                # TRD Granite, N=16 stable segments
     │   └── curve_features_per_signal.csv
-    └── Limestone/              # TRD Limestone, N=11 boreholes
+    └── Limestone/              # TRD Limestone, N=11 stable segments
         └── curve_features_per_signal.csv
 ```
 
@@ -91,7 +91,7 @@ Each `curve_features_per_signal.csv` contains per-signal statistical features ex
 | `dominant_freq`, `spectral_entropy`, ... | Frequency-domain features |
 | `sample_entropy` | Complexity feature |
 
-The pairwise pairing strategy expands the usable sample count from **71** original-signal samples to **1,274** CC samples for the pressure signal (Table 8 of the paper). Pairs are formed within each lithology group, and each borehole of a pair contributes one sample.
+The pairwise pairing strategy expands the usable sample count from **71** original-signal samples to **1,284** CC samples for the pressure signal (Table 8 of the paper). Pairs are formed within each lithology group, and each borehole of a pair contributes one sample.
 
 ## Requirements
 
@@ -137,8 +137,8 @@ python predict_lithology_5types.py
 This evaluates LDA, KNN, SVM-RBF, XGBoost, LightGBM, and RandomForest on `original` vs. `final_comm` features across the five lithology groups, using stratified 80/20 splits with 5-fold CV repeated 10 times.
 
 **Expected results** (pressure + torque, best classifiers; mean accuracy averaged over 10 random 80/20 splits):
-- Original signal → RandomForest: **94.7%**
-- Common component → LightGBM: **99.0%**
+- Original signal → RandomForest: **94.6%**
+- Common component → LightGBM: **99.5%**
 
 ## Key Configuration Parameters
 
