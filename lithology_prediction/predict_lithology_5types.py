@@ -6,7 +6,7 @@
 # 策略：每孔在每个分解阶段取跨配对均值 → 特征向量
 #       按类分层80/20切分，训练集上5折GridSearchCV调参
 #       重复10次随机切分取均值和标准差
-#       比较 original / final_diff / final_comm 三个阶段
+#       比较 original / final_comm 两个阶段
 #       同时比较 pressure / torque / pressure+torque 三种特征组合
 # ══════════════════════════════════════════════════════════════════════
 
@@ -56,7 +56,7 @@ ALL_SIGNAL_FEATURES = [
     "sample_entropy",
 ]
 
-STAGES_OF_INTEREST = ["original", "final_diff", "final_comm"]
+STAGES_OF_INTEREST = ["original", "final_comm"]   # 公开数据只含这两个阶段
 
 # ── 6 个分类器 ─────────────────────────────────────────
 CLASSIFIERS = {
@@ -120,9 +120,12 @@ def load_all_features():
         df = df[df["stage"].isin(STAGES_OF_INTEREST)].copy()
         feat_cols = [f for f in ALL_SIGNAL_FEATURES if f in df.columns]
 
-        # original：按 (hole, signal) 去重，取第一条（所有重复行特征相同）
-        orig_df = df[df["stage"] == "original"].drop_duplicates(
-            subset=["hole", "signal"], keep="first")
+        # original：每个 (hole, signal) 只保留一条。同一孔段在各配对中按较短一方截断，各行特征并不相同，
+        # 这里取未被截断（N_samples 最大）的那一行，即完整孔段；样本顺序与原来一致
+        _o = df[df["stage"] == "original"]
+        _first = _o.drop_duplicates(subset=["hole", "signal"], keep="first")[["hole", "signal"]]
+        _full = _o.loc[_o.groupby(["hole", "signal"])["N_samples"].idxmax()]
+        orig_df = _first.merge(_full, on=["hole", "signal"], how="left")
         for _, row in orig_df.iterrows():
             rec = {
                 "sample_id":  f"{rt['folder']}__{row['hole']}__{row['signal']}__original",
@@ -181,25 +184,24 @@ def pivot_to_matrix(df, stage, signals=("pressure", "torque")):
     parts = {}
     for sig in signals:
         sub = stage_df[stage_df["signal"] == sig].copy()
-        sub = sub.set_index(["pair", "hole_id"])
-        sub = sub[feat_cols + ["rock_label", "rock_name"]].add_prefix(f"{sig}_")
+        # 连接键含岩性名：不同岩性文件夹里存在同名孔段（如 TRD_1-x），只按 (pair, hole_id) 连接会交叉拼接
+        sub = sub.set_index(["rock_name", "pair", "hole_id"])
+        sub = sub[feat_cols + ["rock_label"]].add_prefix(f"{sig}_")
         parts[sig] = sub
 
     merged = parts[signals[0]]
     for sig in signals[1:]:
-        other = parts[sig].drop(
-            columns=[f"{sig}_rock_label", f"{sig}_rock_name"], errors="ignore")
+        other = parts[sig].drop(columns=[f"{sig}_rock_label"], errors="ignore")
         merged = merged.join(other, how="inner")
 
     merged = merged.reset_index()
     feat_merged = [c for c in merged.columns
-                   if c not in ("pair", "hole_id",
-                                f"{signals[0]}_rock_label",
-                                f"{signals[0]}_rock_name")]
+                   if c not in ("rock_name", "pair", "hole_id",
+                                f"{signals[0]}_rock_label")]
     X     = np.nan_to_num(merged[feat_merged].values.astype(float), nan=0.0)
     y     = merged[f"{signals[0]}_rock_label"].values.astype(int)
     holes = merged["hole_id"].tolist()
-    sids  = (merged["pair"] + "__" + merged["hole_id"]).tolist()
+    sids  = (merged["rock_name"] + "__" + merged["pair"] + "__" + merged["hole_id"]).tolist()
     return X, y, holes, sids
     holes = merged["hole"].tolist()
     sids  = (merged["pair"] + "__" + merged["hole"]).tolist()
