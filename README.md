@@ -40,12 +40,12 @@ Six supplementary appendices referenced in the paper are provided in [`appendice
 
 | # | Appendix | Contents |
 |---|----------|----------|
-| 1 | [Baseline comparison of WPD against EMD, EEMD and VMD](appendices/Appendix%20-%20Baseline%20comparison%20of%20WPD%20against%20EMD%2C%20EEMD%20and%20VMD.pdf) | The three alternatives substituted for WPD in the first stage, with everything else held fixed; single case and all six borehole pairs |
-| 2 | [Sensitivity of WPD to the choice of wavelet basis](appendices/Appendix%20-%20Sensitivity%20of%20WPD%20to%20the%20choice%20of%20wavelet%20basis.pdf) | db4 against haar, db2, db6, db8 and sym4, from one to eight vanishing moments |
-| 3 | [Robustness of the node threshold and the soft-mask parameter](appendices/Appendix%20-%20Robustness%20of%20the%20node%20threshold%20and%20the%20soft-mask%20parameter.pdf) | 1551 decompositions across nine datasets; five threshold rules, three mask modes, and σ from 0.5 to 2.0 |
-| 4 | [Feature correlation and redundancy analysis](appendices/Appendix%20-%20Feature%20correlation%20and%20redundancy%20analysis.pdf) | Correlation matrix, VIF and condition number for the 10 features, with an ablation over three feature subsets |
-| 5 | [Class-wise lithology-identification performance](appendices/Appendix%20-%20Class-wise%20lithology-identification%20performance.pdf) | Per-class precision, recall and F1, macro-averaged F1, balanced accuracy and confusion matrices |
-| 6 | [User guide to the MWD-data analysis web platform](appendices/Appendix%20-%20User%20guide%20to%20the%20MWD-data%20analysis%20web%20platform.pdf) | Input format, the full workflow screen by screen, and a worked example that reproduces one row of Table 3 |
+| A | [Baseline comparison of WPD against EMD, EEMD and VMD](appendices/Appendix%20-%20Baseline%20comparison%20of%20WPD%20against%20EMD%2C%20EEMD%20and%20VMD.pdf) | The three alternatives substituted for WPD in the first stage, with everything else held fixed; single case and all six borehole pairs |
+| B | [Sensitivity of WPD to the choice of wavelet basis](appendices/Appendix%20-%20Sensitivity%20of%20WPD%20to%20the%20choice%20of%20wavelet%20basis.pdf) | db4 against haar, db2, db6, db8 and sym4, from one to eight vanishing moments |
+| C | [Robustness of the node threshold and the soft-mask parameter](appendices/Appendix%20-%20Robustness%20of%20the%20node%20threshold%20and%20the%20soft-mask%20parameter.pdf) | 1551 decompositions across nine datasets; five threshold rules, three mask modes, and σ from 0.5 to 2.0 |
+| D | [Feature correlation and redundancy analysis](appendices/Appendix%20-%20Feature%20correlation%20and%20redundancy%20analysis.pdf) | Correlation matrix, VIF and condition number for the 10 features, with an ablation over three feature subsets |
+| E | [Class-wise lithology-identification performance](appendices/Appendix%20-%20Class-wise%20lithology-identification%20performance.pdf) | Per-class precision, recall and F1, macro-averaged F1, balanced accuracy and confusion matrices |
+| F | [User guide to the MWD-data analysis web platform](appendices/Appendix%20-%20User%20guide%20to%20the%20MWD-data%20analysis%20web%20platform.pdf) | Input format, the full workflow screen by screen, and a worked example that reproduces one row of Table 3 |
 
 ## Repository Structure
 
